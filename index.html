@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final 4950</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+            --fontColor: rgb(43, 43, 43);
+        }
+
+        body {
+            background-color: whitesmoke;
+            min-height: 100vh;
+            display: flex;
+            flex-flow: column nowrap;
+            color: var(--fontColor);
+
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+            border-left: 4px solid;
+            border-right: 4px solid;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        main button {
+            font-size: 1.1rem;
+        }
+
+        .tokenControl {
+            margin: 3rem 0 1rem 0;
+            display: flex;
+            flex-flow: column;
+        }
+
+        textarea {
+            max-width: 100%;
+            min-width: 100%;
+        }
+
+        h3 {
+            margin-top: 0.5rem;
+        }
+
+        .resultContainer {
+            border: 2px solid;
+            margin-top: 3rem;
+            padding: 0.5rem;
+        }
+
+        footer {
+            padding: 1rem 0;
+            border-top: 2px solid;
+            border-bottom: 2px solid;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <h1 id="heading">Final Exam Part 2 - Hosting Application</h1>
+    </header>
+    <main>
+        <button id="publicBtn">Get Public Data</button>
+
+
+        <div class="tokenControl">
+            <label for="tokenInput">Fill JWT in below input feild to access private data:</label>
+            <textarea name="" id="tokenInput"></textarea>
+        </div>
+        <button id="privateBtn">Get Private Data</button>
+
+        <div class="resultContainer">
+            <h3>Results:</h3>
+            <div id="result">
+            </div>
+        </div>
+    </main>
+    <footer>
+        &copy; WMDD 4950 - Security & Cloud & Server Admn
+    </footer>
+
+    <script>
+
+        const baseUrl = "http://54.189.42.29:4050/";
+ 
+
+
+        publicBtn.addEventListener('click', () => {
+            updateResult("public");
+        });
+
+        privateBtn.addEventListener('click', () => {
+            updateResult("private");
+        });
+
+
+        async function updateResult(endpoint) {
+
+            const token = tokenInput.value;
+
+            try {
+                const response = await fetch(baseUrl + endpoint,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const data = await response.json();
+                document.getElementById('result').innerText = data.message;
+
+            } catch (error) {
+                document.getElementById('result').innerText = "Check your connection";
+            }
+
+        }
+    </script>
+</body>
+
+</html>
